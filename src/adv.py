@@ -125,7 +125,7 @@ while True:
             print('\nPlease enter a valid selection')
     
     else:
-        if selection[0] == 'get':
+        if selection[0] == 'get' or selection[0] == 'take':
             name = selection[1]
             
             try:
