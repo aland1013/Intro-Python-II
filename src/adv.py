@@ -157,5 +157,3 @@ while True:
         
         else:
             print('\nPlease enter a valid selection')
-            
-    
