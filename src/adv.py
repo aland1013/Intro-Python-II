@@ -128,32 +128,25 @@ while True:
         if selection[0] == 'get' or selection[0] == 'take':
             name = selection[1]
             
-            try:
-                if item[name] in player.current_room.items:
-                    player.current_room.items.remove(item[name])
-                    player.inventory.append(item[name])
-                    item[name].on_take()
-                    
-                else:
-                    print(f'\nNo {name} here')
-            
-            except KeyError:
+            if name in item and item[name] in player.current_room.items:
+                player.current_room.items.remove(item[name])
+                player.inventory.append(item[name])
+                item[name].on_take()
+                
+            else:
                 print(f'\nNo {name} here')
             
         elif selection[0] == 'drop':
             name = selection[1]
+        
+            if name in item and item[name] in player.inventory:
+                player.inventory.remove(item[name])
+                player.current_room.items.append(item[name])
+                item[name].on_drop()
             
-            try:
-                if item[name] in player.inventory:
-                    player.inventory.remove(item[name])
-                    player.current_room.items.append(item[name])
-                    item[name].on_drop()
-                
-                else:
-                    print(f'\nYou do not have a {name}')
-            
-            except KeyError:
+            else:
                 print(f'\nYou do not have a {name}')
+            
         
         else:
             print('\nPlease enter a valid selection')
