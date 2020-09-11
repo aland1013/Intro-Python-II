@@ -8,4 +8,12 @@ class Room:
         self.items = items
     
     def __str__(self):
-        return self.description
+        ret = f'Location: {self.name}\n\nDescription: {self.description}\n\nItems: '
+        
+        if len(self.items) > 0:
+            for item in self.items:
+                ret += '\n - ' + item.name + '\n'
+        else:
+            ret += 'none\n'
+        
+        return ret

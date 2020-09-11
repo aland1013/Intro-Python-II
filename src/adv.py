@@ -1,11 +1,12 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons", []),
+                     "North of you, the cave mount beckons", [Item('Sword', 'Iron Broadword')]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east.""", []),
@@ -39,7 +40,7 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
-player = Player('Adam', room['outside'])
+player = Player('Adam', room['outside'], [])
 
 # Write a loop that:
 #
@@ -51,11 +52,11 @@ player = Player('Adam', room['outside'])
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-selection = 0
+selection = ''
 
-while selection != 'q':
-    print(f'\n*****\nLocation: {player.current_room.name}\n')
-    print(f'Description: {player.current_room.description}\n*****')
+print(f'\n*****\n{player.current_room}\n*****')
+
+while True:
     
     selection = input("\nEnter 'n', 's', 'e', or 'w' to move\nor 'q' to quit: ")
     
@@ -63,6 +64,8 @@ while selection != 'q':
         try:
             player.current_room = player.current_room.n_to
             print('\n...Moving north...')
+            print(f'\n*****\n{player.current_room}\n*****')
+
         except AttributeError:
             print('\nCannot travel north from here')
     
@@ -70,6 +73,8 @@ while selection != 'q':
         try:
             player.current_room = player.current_room.s_to
             print('\n...Moving south...')
+            print(f'\n*****\n{player.current_room}\n*****')
+    
         except AttributeError:
             print('\nCannot travel south from here')
     
@@ -77,6 +82,9 @@ while selection != 'q':
         try:
             player.current_room = player.current_room.e_to
             print('\n...Moving east...')
+            print(f'\n*****\n{player.current_room}\n*****')
+
+    
         except AttributeError:
             print('\nCannot travel east from here')
     
@@ -84,9 +92,15 @@ while selection != 'q':
         try:
             player.current_room = player.current_room.w_to
             print('\n...Moving west...')
+            print(f'\n*****\n{player.current_room}\n*****')
+    
         except AttributeError:
             print('\nCannot travel west from here')
             
+    elif selection == 'q':
+        print('\nThank you for playing!\n')
+        break
+    
     else:
         print('\nPlease enter a valid selection')
     
