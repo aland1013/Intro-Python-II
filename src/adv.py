@@ -2,11 +2,16 @@ from room import Room
 from player import Player
 from item import Item
 
+item = {
+    'sword': Item('sword', 'iron broadsword'),
+    'lantern': Item('lantern', 'oil lantnern')
+}
+
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons", [Item('Sword', 'Iron Broadword')]),
+                     "North of you, the cave mount beckons", [item['sword'], item['lantern']]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east.""", []),
@@ -22,7 +27,6 @@ to north. The smell of gold permeates the air.""", []),
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south.""", []),
 }
-
 
 # Link rooms together
 
@@ -58,49 +62,90 @@ print(f'\n*****\n{player.current_room}\n*****')
 
 while True:
     
-    selection = input("\nEnter 'n', 's', 'e', or 'w' to move\nor 'q' to quit: ")
+    selection = input("\nEnter 'n', 's', 'e', or 'w' to move\n'get <item>' to pick up an item\n'drop <item>' to drop an item\n'i' or 'inventory' to view your items\nor 'q' to quit: ")
     
-    if selection == 'n':
-        try:
-            player.current_room = player.current_room.n_to
-            print('\n...Moving north...')
-            print(f'\n*****\n{player.current_room}\n*****')
+    selection = selection.split(' ')
+    
+    if len(selection) == 1:
+        
+        selection = selection[0]
+    
+        if selection == 'n':
+            try:
+                player.current_room = player.current_room.n_to
+                print('\n...Moving north...')
+                print(f'\n*****\n{player.current_room}\n*****')
 
-        except AttributeError:
-            print('\nCannot travel north from here')
-    
-    elif selection == 's':
-        try:
-            player.current_room = player.current_room.s_to
-            print('\n...Moving south...')
-            print(f'\n*****\n{player.current_room}\n*****')
-    
-        except AttributeError:
-            print('\nCannot travel south from here')
-    
-    elif selection == 'e':
-        try:
-            player.current_room = player.current_room.e_to
-            print('\n...Moving east...')
-            print(f'\n*****\n{player.current_room}\n*****')
+            except AttributeError:
+                print('\nCannot travel north from here')
+        
+        elif selection == 's':
+            try:
+                player.current_room = player.current_room.s_to
+                print('\n...Moving south...')
+                print(f'\n*****\n{player.current_room}\n*****')
+        
+            except AttributeError:
+                print('\nCannot travel south from here')
+        
+        elif selection == 'e':
+            try:
+                player.current_room = player.current_room.e_to
+                print('\n...Moving east...')
+                print(f'\n*****\n{player.current_room}\n*****')
 
-    
-        except AttributeError:
-            print('\nCannot travel east from here')
-    
-    elif selection == 'w':
-        try:
-            player.current_room = player.current_room.w_to
-            print('\n...Moving west...')
-            print(f'\n*****\n{player.current_room}\n*****')
-    
-        except AttributeError:
-            print('\nCannot travel west from here')
+        
+            except AttributeError:
+                print('\nCannot travel east from here')
+        
+        elif selection == 'w':
+            try:
+                player.current_room = player.current_room.w_to
+                print('\n...Moving west...')
+                print(f'\n*****\n{player.current_room}\n*****')
+        
+            except AttributeError:
+                print('\nCannot travel west from here')
+                
+        elif selection == 'q':
+            print('\nThank you for playing!\n')
+            break
+        
+        elif selection == 'i' or selection == 'inventory':
+            if len(player.inventory) == 0:
+                print('\nYou are not carrying any items')
+            else:
+                print('\nYou are carrying the following items:')
+                for i in player.inventory:
+                    print(f' - {i}\n')
             
-    elif selection == 'q':
-        print('\nThank you for playing!\n')
-        break
+        else:
+            print('\nPlease enter a valid selection')
     
     else:
-        print('\nPlease enter a valid selection')
+        if selection[0] == 'get':
+            name = selection[1]
+            
+            if item[name] in player.current_room.items:
+                player.current_room.items.remove(item[name])
+                player.inventory.append(item[name])
+                item[name].on_take()
+                
+            else:
+                print(f'\nNo {name} here')
+        
+        elif selection[0] == 'drop':
+            name = selection[1]
+            
+            if item[name] in player.inventory:
+                player.inventory.remove(item[name])
+                player.current_room.items.append(item[name])
+                item[name].on_drop()
+            
+            else:
+                print(f'\nYou do not have a {name}')
+        
+        else:
+            print('\nPlease enter a valid selection')
+            
     

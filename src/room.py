@@ -12,7 +12,7 @@ class Room:
         
         if len(self.items) > 0:
             for item in self.items:
-                ret += '\n - ' + item.name + '\n'
+                ret += '\n - ' + item.name
         else:
             ret += 'none\n'
         
