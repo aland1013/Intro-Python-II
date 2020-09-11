@@ -4,7 +4,9 @@ from item import Item
 
 item = {
     'sword': Item('sword', 'iron broadsword'),
-    'lantern': Item('lantern', 'oil lantnern')
+    'lantern': Item('lantern', 'oil lantnern'),
+    'apple': Item('apple', 'honeycrisp apple'),
+    'ring': Item('ring', 'gold ring')
 }
 
 # Declare all the rooms
@@ -18,10 +20,10 @@ passages run north and east.""", []),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm.""", []),
+the distance, but there is no way across the chasm.""", [item['ring']]),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air.""", []),
+to north. The smell of gold permeates the air.""", [item['apple']]),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
